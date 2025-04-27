@@ -8,11 +8,22 @@ use Illuminate\Support\Facades\Auth;
 
 class GoalController extends Controller
 {
-    public function index()
-    {
-        $goals = Goal::where('user_id', Auth::id())->get();
-        return view('goals.index', compact('goals'));
+    
+    
+    public function index(Request $request)
+
+     {
+         $visibility = $request->query('visibility'); // Get filter from URL query parameter, if any
+
+         $goals = Goal::where('user_id', Auth::id());
+         if ($visibility) {
+             $goals->where('visibility', $visibility);
+         }
+
+         $goals = $goals->get();
+         return view('goals.index', compact('goals'));
     }
+
 
     public function create()
     {
@@ -25,6 +36,7 @@ class GoalController extends Controller
             'title' => 'required|max:255',
             'description' => 'nullable',
             'deadline' => 'nullable|date',
+            'visibility' => 'required|in:private,public', // <-- Added validation for visibility
         ]);
 
         Goal::create([
@@ -35,8 +47,9 @@ class GoalController extends Controller
             'progress' => 0,
             'latitude' => $request->latitude,
             'longitude' => $request->longitude,
+            'visibility' => $request->visibility, // <-- Save visibility
         ]);
-        
+    
 
         return redirect()->route('goals.index')->with('success', 'Goal created successfully!');
     }

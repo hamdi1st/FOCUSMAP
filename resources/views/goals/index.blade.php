@@ -2,12 +2,27 @@
     <div class="max-w-4xl mx-auto p-6">
         <h1 class="text-3xl font-bold mb-6">My Goals</h1>
 
+        <!-- Filter form for visibility -->
+        <div class="mb-4">
+            <form method="GET" action="{{ route('goals.index') }}">
+                <label for="visibility" class="block font-semibold mb-2">Filter by Visibility</label>
+                <select name="visibility" id="visibility" class="w-full border p-2 rounded">
+                    <option value="">All</option>
+                    <option value="private" {{ request('visibility') == 'private' ? 'selected' : '' }}>Private</option>
+                    <option value="public" {{ request('visibility') == 'public' ? 'selected' : '' }}>Public</option>
+                </select>
+                <button type="submit" class="mt-2 bg-blue-500 text-white px-4 py-2 rounded">Filter</button>
+            </form>
+        </div>
+
+        <!-- Button to create new goal -->
         <div class="mb-6">
             <a href="{{ route('goals.create') }}" class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded">
                 + Create New Goal
             </a>
         </div>
 
+        <!-- Displaying goals -->
         @if ($goals->count())
             <div class="space-y-6">
                 @foreach ($goals as $goal)

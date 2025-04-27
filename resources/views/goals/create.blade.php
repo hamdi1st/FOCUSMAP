@@ -30,6 +30,15 @@
                 <input type="date" name="deadline" class="w-full border p-2 rounded">
             </div>
 
+            <div class="mb-4">
+              <label for="visibility" class="block mb-1 font-semibold">Visibility</label>
+              <select name="visibility" id="visibility" class="w-full border p-2 rounded">
+              <option value="private" {{ old('visibility', 'private') == 'private' ? 'selected' : '' }}>Private</option>
+              <option value="public" {{ old('visibility', 'private') == 'public' ? 'selected' : '' }}>Public</option>
+             </select>
+            </div>
+
+
              <input type="hidden" name="latitude" id="latitude">
              <input type="hidden" name="longitude" id="longitude">
 
