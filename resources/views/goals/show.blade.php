@@ -57,6 +57,16 @@
             Back to Goals
         </a>
 
+
+        <form action="{{ route('goals.destroy', $goal) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this goal? This action cannot be undone.');" class="inline-block mt-4">
+        @csrf
+        @method('DELETE')
+       <button type="submit" class="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded">
+           Delete Goal
+       </button>
+       </form>
+
+
         <!-- 🔥 Steps Section -->
         <div class="mt-10">
             <h2 class="text-xl font-bold mb-4">Steps</h2>

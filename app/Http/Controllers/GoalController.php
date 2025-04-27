@@ -56,5 +56,18 @@ class GoalController extends Controller
          return view('goals.map', compact('goals'));
       }
 
+      public function destroy(Goal $goal)
+       {
+          // Make sure the user is the owner
+          if ($goal->user_id !== Auth::id()) {
+              abort(403, 'Unauthorized action.');
+          }
+      
+          $goal->delete();
+      
+          return redirect()->route('goals.index')->with('success', 'Goal deleted successfully!');
+        }
+      
+
 
 }
