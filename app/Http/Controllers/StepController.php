@@ -19,16 +19,27 @@ class StepController extends Controller
             'is_completed' => false,
         ]);
 
+        $goal->updateProgress();
+
         return redirect()->route('goals.show', $goal)->with('success', 'Step added successfully!');
     }
 
     public function toggle(Goal $goal, Step $step)
     {
-    $step->update([
-        'is_completed' => !$step->is_completed,
-    ]);
+        $step->is_completed = !$step->is_completed;
+        $step->save();
 
-    return redirect()->route('goals.show', $goal);
+        $goal->updateProgress();
+
+        return redirect()->route('goals.show', $goal)->with('success', 'Step updated.');
     }
 
+    public function destroy(Goal $goal, Step $step)
+    {
+        $step->delete();
+
+        $goal->updateProgress();
+
+        return redirect()->route('goals.show', $goal)->with('success', 'Step deleted successfully.');
+    }
 }

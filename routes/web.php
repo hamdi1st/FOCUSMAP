@@ -41,5 +41,9 @@ Route::post('/goals/{goal}/steps', [\App\Http\Controllers\StepController::class,
 
 Route::patch('/goals/{goal}/steps/{step}/toggle', [\App\Http\Controllers\StepController::class, 'toggle'])->name('steps.toggle');
 
+Route::delete('/goals/{goal}/steps/{step}', [\App\Http\Controllers\StepController::class, 'destroy'])->name('steps.destroy');
+
+Route::patch('/goals/{goal}/steps/{step}', [\App\Http\Controllers\StepController::class, 'toggle'])->name('steps.toggle');
+
 
 require __DIR__.'/auth.php';

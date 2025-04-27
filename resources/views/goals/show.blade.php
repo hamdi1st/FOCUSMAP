@@ -21,18 +21,30 @@
             <h2 class="text-xl font-bold mb-4">Steps</h2>
 
             @if ($goal->steps->count())
-                <ul class="list-disc pl-5">
+                <ul class="space-y-4">
                     @foreach ($goal->steps as $step)
-                        <li class="mb-2 flex items-center">
-                            <form method="POST" action="{{ route('steps.toggle', [$goal, $step]) }}" class="flex items-center">
+                        <li class="flex items-center justify-between p-3 bg-gray-100 rounded">
+                            <div class="flex items-center">
+                                <!-- Toggle Step Completion -->
+                                <form method="POST" action="{{ route('steps.toggle', [$goal, $step]) }}" class="flex items-center">
+                                    @csrf
+                                    @method('PATCH')
+
+                                    <input type="checkbox" onchange="this.form.submit()" {{ $step->is_completed ? 'checked' : '' }} class="mr-2">
+                                    <span class="{{ $step->is_completed ? 'line-through text-gray-500' : '' }}">
+                                        {{ $step->title }}
+                                    </span>
+                                </form>
+                            </div>
+
+                            <!-- Delete Step -->
+                            <form method="POST" action="{{ route('steps.destroy', [$goal, $step]) }}" onsubmit="return confirm('Are you sure you want to delete this step?');">
                                 @csrf
-                                @method('PATCH')
+                                @method('DELETE')
 
-                                <input type="checkbox" name="is_completed" onchange="this.form.submit()" {{ $step->is_completed ? 'checked' : '' }} class="mr-2">
-
-                                <span class="{{ $step->is_completed ? 'line-through text-gray-500' : '' }}">
-                                    {{ $step->title }}
-                                </span>
+                                <button type="submit" class="text-red-500 hover:text-red-700 text-sm">
+                                    Delete
+                                </button>
                             </form>
                         </li>
                     @endforeach
@@ -42,7 +54,7 @@
             @endif
 
             <!-- Add New Step Form -->
-            <div class="mt-6">
+            <div class="mt-8">
                 <h3 class="text-lg font-semibold mb-2">Add a New Step</h3>
 
                 <form method="POST" action="{{ route('steps.store', $goal) }}">
@@ -58,6 +70,5 @@
                 </form>
             </div>
         </div>
-
     </div>
 </x-app-layout>
