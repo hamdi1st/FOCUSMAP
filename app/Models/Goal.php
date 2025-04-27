@@ -10,12 +10,15 @@ class Goal extends Model
     use HasFactory;
 
     protected $fillable = [
-        'user_id',
-        'title',
-        'description',
-        'deadline',
-        'progress',
-    ];
+      'user_id',
+      'title',
+      'description',
+      'deadline',
+      'progress',
+      'latitude',
+      'longitude',
+  ];
+  
 
     // Relation: a Goal belongs to a User
     public function user()

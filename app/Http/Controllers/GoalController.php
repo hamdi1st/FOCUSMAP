@@ -33,7 +33,10 @@ class GoalController extends Controller
             'description' => $request->description,
             'deadline' => $request->deadline,
             'progress' => 0,
+            'latitude' => $request->latitude,
+            'longitude' => $request->longitude,
         ]);
+        
 
         return redirect()->route('goals.index')->with('success', 'Goal created successfully!');
     }
@@ -42,5 +45,16 @@ class GoalController extends Controller
     {
         return view('goals.show', compact('goal'));
     }
+
+    public function map()
+      {
+        $goals = Goal::where('user_id', Auth::id())
+                 ->whereNotNull('latitude')
+                 ->whereNotNull('longitude')
+                 ->get();
+
+         return view('goals.map', compact('goals'));
+      }
+
 
 }

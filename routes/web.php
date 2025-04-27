@@ -45,5 +45,7 @@ Route::delete('/goals/{goal}/steps/{step}', [\App\Http\Controllers\StepControlle
 
 Route::patch('/goals/{goal}/steps/{step}', [\App\Http\Controllers\StepController::class, 'toggle'])->name('steps.toggle');
 
+Route::get('/map', [\App\Http\Controllers\GoalController::class, 'map'])->name('goals.map');
+
 
 require __DIR__.'/auth.php';

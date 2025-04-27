@@ -12,6 +12,47 @@
             <strong>Progress:</strong> {{ $goal->progress }}%
         </p>
 
+        @if ($goal->latitude && $goal->longitude)
+          <div class="my-6">
+            <h2 class="text-xl font-semibold mb-2">Location</h2>
+           <div id="goal-map" class="w-full h-64 rounded border"></div>
+         </div>
+
+@push('scripts')
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            var map = L.map('goal-map').setView([{{ $goal->latitude }}, {{ $goal->longitude }}], 13);
+
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                maxZoom: 19,
+            }).addTo(map);
+
+            // Custom Marker Icon
+            var goalIcon = L.icon({
+                iconUrl: 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/svgs/solid/star.svg', // Valid Star Icon URL
+                iconSize: [32, 32], // Size of the icon
+                iconAnchor: [16, 32], // Point of the icon which will correspond to marker's location
+                popupAnchor: [0, -32] // Point from which the popup should open relative to the iconAnchor
+            });
+
+            // Add custom marker with popup
+            L.marker([{{ $goal->latitude }}, {{ $goal->longitude }}], { icon: goalIcon })
+                .addTo(map)
+                .bindPopup('📍 Goal Location')
+                .openPopup();
+        });
+    </script>
+@endpush
+
+
+
+        @push('styles')
+           <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+        @endpush
+    @endif
+
+
         <a href="{{ route('goals.index') }}" class="inline-block bg-gray-400 hover:bg-gray-500 text-white px-4 py-2 rounded">
             Back to Goals
         </a>
