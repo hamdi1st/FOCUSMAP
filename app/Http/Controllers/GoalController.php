@@ -117,6 +117,13 @@ class GoalController extends Controller
         
             return redirect()->route('goals.index')->with('success', 'Goal updated successfully!');
         }
+
+        public function mindmap(Goal $goal)
+    {
+        $goal->load('steps'); // Load steps with the goal
+        return view('goals.mindmap', compact('goal'));
+    }
+
         
 
 }

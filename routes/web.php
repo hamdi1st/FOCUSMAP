@@ -26,5 +26,7 @@ Route::middleware('auth')->group(function () {
 Route::post('/goals/{goal}/steps', [\App\Http\Controllers\StepController::class, 'store'])->name('steps.store');
 Route::patch('/goals/{goal}/steps/{step}/toggle', [\App\Http\Controllers\StepController::class, 'toggle'])->name('steps.toggle');
 Route::delete('/goals/{goal}/steps/{step}', [\App\Http\Controllers\StepController::class, 'destroy'])->name('steps.destroy');
+Route::get('/goals/{goal}/mindmap', [\App\Http\Controllers\GoalController::class, 'mindmap'])->name('goals.mindmap');
+
 
 require __DIR__.'/auth.php';
