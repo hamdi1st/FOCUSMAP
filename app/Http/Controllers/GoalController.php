@@ -81,6 +81,42 @@ class GoalController extends Controller
           return redirect()->route('goals.index')->with('success', 'Goal deleted successfully!');
         }
       
-
+    
+        public function edit(Goal $goal)
+        {
+            // Check if the user owns the goal
+            if ($goal->user_id !== Auth::id()) {
+                abort(403, 'Unauthorized action.');
+            }
+        
+            return view('goals.edit', compact('goal'));
+        }
+    
+    
+        public function update(Request $request, Goal $goal)
+        {
+            if ($goal->user_id !== Auth::id()) {
+                abort(403, 'Unauthorized action.');
+            }
+        
+            $request->validate([
+                'title' => 'required|max:255',
+                'description' => 'nullable',
+                'deadline' => 'nullable|date',
+                'visibility' => 'required|in:private,public',
+            ]);
+        
+            $goal->update([
+                'title' => $request->title,
+                'description' => $request->description,
+                'deadline' => $request->deadline,
+                'latitude' => $request->latitude,
+                'longitude' => $request->longitude,
+                'visibility' => $request->visibility,
+            ]);
+        
+            return redirect()->route('goals.index')->with('success', 'Goal updated successfully!');
+        }
+        
 
 }

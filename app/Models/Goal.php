@@ -10,11 +10,12 @@ class Goal extends Model
     use HasFactory;
 
     protected $fillable = [
-      'user_id', 'title', 'description', 'deadline', 'progress', 'latitude', 'longitude', 'visibility',
+        'user_id', 'title', 'description', 'deadline', 'progress', 'latitude', 'longitude', 'visibility',
     ];
-  
-  
 
+    // Cast 'deadline' to a Carbon instance
+    protected $dates = ['deadline'];
+  
     // Relation: a Goal belongs to a User
     public function user()
     {
@@ -23,22 +24,20 @@ class Goal extends Model
 
     public function steps()
     {
-    return $this->hasMany(Step::class);
+        return $this->hasMany(Step::class);
     }
 
     public function updateProgress()
     {
-      $totalSteps = $this->steps()->count();
-      $completedSteps = $this->steps()->where('is_completed', true)->count();
+        $totalSteps = $this->steps()->count();
+        $completedSteps = $this->steps()->where('is_completed', true)->count();
 
-       if ($totalSteps > 0) {
-         $this->progress = round(($completedSteps / $totalSteps) * 100);
-       }   else {
-          $this->progress = 0;
-       }
+        if ($totalSteps > 0) {
+            $this->progress = round(($completedSteps / $totalSteps) * 100);
+        } else {
+            $this->progress = 0;
+        }
 
-      $this->save();
-   }
-
-
+        $this->save();
+    }
 }

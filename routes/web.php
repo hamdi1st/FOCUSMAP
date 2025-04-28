@@ -4,26 +4,14 @@ use App\Http\Controllers\GoalController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 
-/*
-|--------------------------------------------------------------------------
-| Web Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register web routes for your application. These
-| routes are loaded by the RouteServiceProvider and all of them will
-| be assigned to the "web" middleware group. Make something great!
-|
-*/
-
 Route::middleware(['auth'])->group(function () {
-    Route::resource('goals', GoalController::class);
+    Route::resource('goals', GoalController::class); // includes index, create, store, show, edit, update, destroy
+    Route::get('/map', [GoalController::class, 'map'])->name('goals.map');
 });
-
 
 Route::get('/', function () {
     return view('welcome');
 });
-
 
 Route::get('/dashboard', function () {
     return view('dashboard');
@@ -35,17 +23,8 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-Route::get('/goals/{goal}', [GoalController::class, 'show'])->name('goals.show');
-
 Route::post('/goals/{goal}/steps', [\App\Http\Controllers\StepController::class, 'store'])->name('steps.store');
-
 Route::patch('/goals/{goal}/steps/{step}/toggle', [\App\Http\Controllers\StepController::class, 'toggle'])->name('steps.toggle');
-
 Route::delete('/goals/{goal}/steps/{step}', [\App\Http\Controllers\StepController::class, 'destroy'])->name('steps.destroy');
-
-Route::patch('/goals/{goal}/steps/{step}', [\App\Http\Controllers\StepController::class, 'toggle'])->name('steps.toggle');
-
-Route::get('/map', [\App\Http\Controllers\GoalController::class, 'map'])->name('goals.map');
-
 
 require __DIR__.'/auth.php';

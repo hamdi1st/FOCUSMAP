@@ -37,7 +37,12 @@
 
                         <div class="flex items-center space-x-4">
                             <a href="{{ route('goals.show', $goal) }}" class="text-blue-500 hover:underline">View</a>
-                            
+
+                            <!-- Add Edit Link -->
+                            <a href="{{ route('goals.edit', $goal) }}" class="text-yellow-500 hover:text-yellow-600 text-sm">
+                                Edit
+                            </a>
+
                             <form method="POST" action="{{ route('goals.destroy', $goal) }}" onsubmit="return confirm('Are you sure you want to delete this goal?');">
                                 @csrf
                                 @method('DELETE')
