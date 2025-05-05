@@ -12,6 +12,13 @@ class User extends Authenticatable
 {
     use HasApiTokens, HasFactory, Notifiable;
 
+    // app/Models/User.php
+      public function goals()
+     {
+       return $this->hasMany(Goal::class);
+     }
+
+
     /**
      * The attributes that are mass assignable.
      *

@@ -2,6 +2,15 @@
     <div class="max-w-2xl mx-auto p-6">
         <h1 class="text-3xl font-bold mb-6">{{ $goal->title }}</h1>
 
+        @if ($goal->image_path)
+      <div class="mt-6">
+        <h3 class="text-xl font-semibold mb-2">Goal Image</h3>
+        <img src="{{ asset('storage/' . $goal->image_path) }}" alt="Goal Image" class="w-full h-auto rounded">
+      </div>
+    @endif
+
+
+
         <p class="mb-4 text-gray-700">{{ $goal->description }}</p>
 
         <p class="text-gray-600 mb-4">

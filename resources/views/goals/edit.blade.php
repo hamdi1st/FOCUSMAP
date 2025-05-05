@@ -10,7 +10,7 @@
     <div class="max-w-2xl mx-auto p-6">
         <h1 class="text-2xl font-bold mb-6">Edit Goal</h1>
 
-        <form method="POST" action="{{ route('goals.update', $goal->id) }}">
+        <form method="POST" action="{{ route('goals.update', $goal->id) }}" enctype="multipart/form-data">
             @csrf
             @method('PUT')
 
@@ -46,6 +46,20 @@
                 <label class="block mb-1 font-semibold">Pick a location (optional)</label>
                 <div id="map" class="w-full h-64 rounded border"></div>
             </div>
+
+            <!-- Image Upload Field -->
+           <div class="mb-4">
+          <label class="block mb-1 font-semibold">Current Image</label>
+          @if ($goal->image_path)
+           <img src="{{ asset('storage/' . $goal->image_path) }}" alt="Goal Image" class="w-48 h-auto mb-2 rounded">
+          @else
+           <p class="text-sm text-gray-500 italic">No image uploaded.</p>
+           @endif
+
+           <label class="block mt-2 font-semibold">Upload New Image</label>
+           <input type="file" name="image" class="w-full border p-2 rounded">
+         </div>
+
 
             <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">Save Changes</button>
         </form>

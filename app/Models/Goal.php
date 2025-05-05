@@ -10,7 +10,7 @@ class Goal extends Model
     use HasFactory;
 
     protected $fillable = [
-        'user_id', 'title', 'description', 'deadline', 'progress', 'latitude', 'longitude', 'visibility',
+        'user_id', 'title', 'description', 'deadline', 'progress', 'latitude', 'longitude', 'visibility', 'image_path',
     ];
 
     // Cast 'deadline' to a Carbon instance

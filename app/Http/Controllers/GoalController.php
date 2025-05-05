@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Goal;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 
 class GoalController extends Controller
 {
@@ -36,10 +37,13 @@ class GoalController extends Controller
             'title' => 'required|max:255',
             'description' => 'nullable',
             'deadline' => 'nullable|date',
-            'visibility' => 'required|in:private,public', // <-- Added validation for visibility
+            'visibility' => 'required|in:private,public',
+            'latitude' => 'nullable|numeric',
+            'longitude' => 'nullable|numeric',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
-
-        Goal::create([
+    
+        $data = [
             'user_id' => Auth::id(),
             'title' => $request->title,
             'description' => $request->description,
@@ -47,12 +51,18 @@ class GoalController extends Controller
             'progress' => 0,
             'latitude' => $request->latitude,
             'longitude' => $request->longitude,
-            'visibility' => $request->visibility, // <-- Save visibility
-        ]);
+            'visibility' => $request->visibility,
+        ];
     
-
+        if ($request->hasFile('image')) {
+            $data['image_path'] = $request->file('image')->store('goal_images', 'public');
+        }
+    
+        Goal::create($data);
+    
         return redirect()->route('goals.index')->with('success', 'Goal created successfully!');
     }
+    
 
     public function show(Goal $goal)
     {
@@ -94,36 +104,51 @@ class GoalController extends Controller
     
     
         public function update(Request $request, Goal $goal)
-        {
-            if ($goal->user_id !== Auth::id()) {
-                abort(403, 'Unauthorized action.');
-            }
-        
-            $request->validate([
-                'title' => 'required|max:255',
-                'description' => 'nullable',
-                'deadline' => 'nullable|date',
-                'visibility' => 'required|in:private,public',
-            ]);
-        
-            $goal->update([
-                'title' => $request->title,
-                'description' => $request->description,
-                'deadline' => $request->deadline,
-                'latitude' => $request->latitude,
-                'longitude' => $request->longitude,
-                'visibility' => $request->visibility,
-            ]);
-        
-            return redirect()->route('goals.index')->with('success', 'Goal updated successfully!');
-        }
-
-        public function mindmap(Goal $goal)
-    {
-        $goal->load('steps'); // Load steps with the goal
-        return view('goals.mindmap', compact('goal'));
+{
+    if ($goal->user_id !== Auth::id()) {
+        abort(403, 'Unauthorized action.');
     }
 
+    $request->validate([
+        'title' => 'required|max:255',
+        'description' => 'nullable',
+        'deadline' => 'nullable|date',
+        'visibility' => 'required|in:private,public',
+        'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+        'latitude' => 'nullable|numeric',
+        'longitude' => 'nullable|numeric',
+    ]);
+
+    $data = [
+        'title' => $request->title,
+        'description' => $request->description,
+        'deadline' => $request->deadline,
+        'latitude' => $request->latitude,
+        'longitude' => $request->longitude,
+        'visibility' => $request->visibility,
+    ];
+
+    if ($request->hasFile('image')) {
+        // Delete old image if it exists
+        if ($goal->image_path) {
+            Storage::disk('public')->delete($goal->image_path);
+        }
+
+        // Store new image
+        $data['image_path'] = $request->file('image')->store('goal_images', 'public');
+    }
+
+    $goal->update($data);
+
+    return redirect()->route('goals.index')->with('success', 'Goal updated successfully!');
+}
+
         
+     public function publicGoals(){
+
+    $publicGoals = Goal::where('visibility', 'public')->latest()->paginate(10);
+    return view('goals.public', compact('publicGoals'));
+}
+
 
 }

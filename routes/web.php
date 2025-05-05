@@ -28,5 +28,7 @@ Route::patch('/goals/{goal}/steps/{step}/toggle', [\App\Http\Controllers\StepCon
 Route::delete('/goals/{goal}/steps/{step}', [\App\Http\Controllers\StepController::class, 'destroy'])->name('steps.destroy');
 Route::get('/goals/{goal}/mindmap', [\App\Http\Controllers\GoalController::class, 'mindmap'])->name('goals.mindmap');
 
+Route::get('/public-goals', [GoalController::class, 'publicGoals'])->name('goals.public');
+
 
 require __DIR__.'/auth.php';

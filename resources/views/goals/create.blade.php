@@ -12,7 +12,7 @@
     <div class="max-w-2xl mx-auto p-6">
         <h1 class="text-2xl font-bold mb-6">Create a New Goal</h1>
 
-        <form method="POST" action="{{ route('goals.store') }}">
+        <form method="POST" action="{{ route('goals.store') }}" enctype="multipart/form-data">
             @csrf
 
             <div class="mb-4">
@@ -48,6 +48,11 @@
                 <div id="map" class="w-full h-64 rounded border"></div>
              </div>
 
+            
+             <div class="mb-4">
+             <label for="image" class="block mb-1 font-semibold">Attach an image (optional)</label>
+             <input type="file" name="image" id="image" class="w-full border p-2 rounded" accept="image/*"> 
+             </div>
 
         <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">
          Save Goal
