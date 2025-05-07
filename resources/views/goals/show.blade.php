@@ -62,18 +62,24 @@
     @endif
 
 
-        <a href="{{ route('goals.index') }}" class="inline-block bg-gray-400 hover:bg-gray-500 text-white px-4 py-2 rounded">
-            Back to Goals
-        </a>
+    <div class="flex flex-wrap gap-3 mb-6">
+    <a href="{{ route('goals.index') }}" class="bg-gray-400 hover:bg-gray-500 text-white px-4 py-2 rounded">
+        Back to Goals
+    </a>
 
+    <a href="{{ route('goals.mindmap', $goal->id) }}" class="bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded">
+        🧠 View Mind Map
+    </a>
 
-        <form action="{{ route('goals.destroy', $goal) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this goal? This action cannot be undone.');" class="inline-block mt-4">
+    <form action="{{ route('goals.destroy', $goal) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this goal? This action cannot be undone.');">
         @csrf
         @method('DELETE')
-       <button type="submit" class="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded">
-           Delete Goal
-       </button>
-       </form>
+        <button type="submit" class="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded">
+            Delete Goal
+        </button>
+    </form>
+</div>
+
 
 
         <!-- 🔥 Steps Section -->

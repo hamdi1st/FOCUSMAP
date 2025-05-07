@@ -151,4 +151,11 @@ class GoalController extends Controller
 }
 
 
+public function mindmap(\App\Models\Goal $goal)
+{
+
+    return view('goals.mindmap', compact('goal'));
+}
+
+
 }
